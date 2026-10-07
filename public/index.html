@@ -6,200 +6,239 @@
   <title>ASTRA Boss Tracker</title>
   <style>
     :root {
-      --bg-color: #0b0d18;
-      --card-bg: #121629;
-      --card-border: #1d223a;
-      --accent-blue: #3d5afe;
-      --accent-orange: #ffab40;
-      --text-main: #ffffff;
-      --text-muted: #7e87a7;
-      --btn-bg: #1a2038;
+      --bg: #070913;
+      --card-bg: #0e1120;
+      --card-border: #181d33;
+      --accent-orange: #ff7043;
+      --accent-blue: #304ffe;
+      --text-muted: #647196;
+      --text-light: #9faecb;
     }
 
-    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', system-ui, sans-serif; }
-    body { background-color: var(--bg-color); color: var(--text-main); padding: 20px; max-width: 1200px; margin: 0 auto; }
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
+    body { background-color: var(--bg); color: #ffffff; padding: 16px; max-width: 1200px; margin: 0 auto; }
 
-    /* Top Navigation Bar */
-    .navbar { display: flex; align-items: center; justify-content: space-between; margin-bottom: 24px; padding: 10px 0; }
-    .logo { display: flex; align-items: center; gap: 10px; font-weight: 700; font-size: 1.2rem; color: #a5b4fc; }
-    .nav-tabs { display: flex; background: #161b33; padding: 4px; border-radius: 20px; border: 1px solid var(--card-border); }
-    .tab { padding: 8px 18px; border-radius: 16px; font-size: 0.85rem; font-weight: 600; color: var(--text-muted); cursor: pointer; text-transform: uppercase; }
-    .tab.active { background: var(--accent-blue); color: #fff; }
-    .status-badge { display: flex; align-items: center; gap: 6px; background: #0f2922; color: #00e676; padding: 4px 12px; border-radius: 12px; font-size: 0.8rem; font-weight: bold; border: 1px solid #00e67644; }
-    .status-dot { width: 8px; height: 8px; background: #00e676; border-radius: 50%; }
+    /* Top Bar */
+    .top-bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
+    .brand { display: flex; align-items: center; gap: 8px; font-weight: 800; font-size: 1.1rem; color: #7c4dff; }
+    .nav-btn { background: #181c33; color: #a5b4fc; padding: 6px 20px; border-radius: 16px; font-size: 0.8rem; font-weight: 700; border: 1px solid #282f52; }
+    .live-badge { background: #08291b; color: #00e676; padding: 4px 12px; border-radius: 12px; font-size: 0.75rem; font-weight: 800; border: 1px solid #00e67644; }
 
-    /* Next Spawn Banner */
-    .featured-card {
-      background: linear-gradient(135deg, #181c35 0%, #101326 100%);
+    /* Main Featured Next Spawn Card */
+    .featured-box {
+      background: linear-gradient(180deg, #121528 0%, #0c0e1a 100%);
       border: 1px solid var(--card-border);
-      border-radius: 16px;
-      padding: 24px 32px;
+      border-radius: 12px;
+      padding: 20px 24px;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 20px;
+      margin-bottom: 16px;
     }
-    .boss-details { display: flex; align-items: center; gap: 20px; }
-    .boss-avatar-ring {
-      width: 80px; height: 80px; border-radius: 50%;
-      border: 3px solid var(--accent-orange);
-      display: flex; align-items: center; justify-content: center;
-      background: #202644; font-size: 2rem;
-    }
-    .boss-meta-label { font-size: 0.75rem; color: var(--accent-orange); font-weight: 800; letter-spacing: 1px; margin-bottom: 4px; }
-    .boss-title { font-size: 2rem; font-weight: 700; margin-bottom: 8px; }
-    .tags { display: flex; gap: 8px; font-size: 0.75rem; }
-    .tag { background: #202744; color: var(--text-muted); padding: 4px 10px; border-radius: 6px; }
-    .tag.highlight { background: #1a2a4a; color: #64b5f6; }
-    .spawn-timestamp { margin-top: 8px; font-size: 0.85rem; color: var(--text-muted); }
+    .boss-details { display: flex; align-items: center; gap: 16px; }
+    .boss-icon { width: 64px; height: 64px; border-radius: 50%; border: 2px solid var(--accent-orange); background: #1a2038; display: flex; align-items: center; justify-content: center; font-size: 1.8rem; }
+    .meta-tag { font-size: 0.7rem; color: var(--accent-orange); font-weight: 800; letter-spacing: 1px; margin-bottom: 2px; }
+    .boss-name-title { font-size: 1.8rem; font-weight: 800; }
+    .badge-row { display: flex; gap: 6px; margin-top: 6px; }
+    .pill { background: #1a2038; color: var(--text-light); font-size: 0.7rem; padding: 3px 8px; border-radius: 4px; font-weight: 600; }
+    .pill.active { background: #0d2847; color: #40c4ff; }
+    .date-str { font-size: 0.75rem; color: var(--text-muted); margin-top: 6px; }
 
-    .timer-display { text-align: right; }
-    .huge-timer { font-size: 3.2rem; font-weight: 800; color: #ffffff; letter-spacing: -1px; }
-    .timer-subtext { font-size: 0.75rem; color: var(--text-muted); letter-spacing: 1px; font-weight: 600; margin-top: 4px; }
-    .btn-kill-featured { margin-top: 10px; background: #e53935; color: white; border: none; padding: 8px 16px; border-radius: 6px; cursor: pointer; font-weight: bold; }
+    .timer-side { text-align: right; }
+    .countdown-text { font-size: 2.8rem; font-weight: 900; color: var(--accent-orange); font-variant-numeric: tabular-nums; }
+    .timer-label { font-size: 0.7rem; color: var(--text-muted); font-weight: 700; letter-spacing: 1px; }
 
-    /* Bottom Main Grid */
-    .dashboard-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+    /* Dashboard Layout */
+    .grid-container { display: grid; grid-template-columns: 320px 1fr; gap: 16px; }
+    .panel { background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 12px; padding: 16px; }
+    .panel-title { font-size: 0.75rem; color: var(--text-muted); font-weight: 800; letter-spacing: 1px; margin-bottom: 12px; display: flex; justify-content: space-between; }
 
-    .panel { background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 16px; padding: 20px; }
-    .panel-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; font-size: 0.85rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase; }
+    /* Left Spawn Row List */
+    .spawn-row { display: flex; justify-content: space-between; padding: 10px 12px; background: #090b16; border-radius: 6px; margin-bottom: 6px; font-size: 0.85rem; border: 1px solid #13172b; }
+    .spawn-name { font-weight: 700; }
+    .spawn-time { font-weight: 700; color: var(--accent-orange); }
 
-    /* Spawn List */
-    .spawn-row { display: flex; justify-content: space-between; align-items: center; padding: 12px; background: #0f1222; border-radius: 8px; margin-bottom: 8px; border: 1px solid #1a1f38; }
-    .spawn-row-name { font-weight: 700; font-size: 0.95rem; }
-    .spawn-row-time { font-weight: 700; color: #a5b4fc; font-size: 0.95rem; }
-
-    /* Interval Grid */
-    .interval-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
-    .interval-btn { background: var(--btn-bg); border: 1px solid var(--card-border); border-radius: 8px; padding: 12px 10px; text-align: left; cursor: pointer; color: #8c98be; font-size: 0.8rem; font-weight: 700; display: flex; justify-content: space-between; align-items: center; }
-    .interval-btn.selected { border-color: var(--accent-orange); color: var(--text-main); background: #252438; }
-    .badge { background: #2a3152; color: #8c98be; padding: 2px 6px; border-radius: 4px; font-size: 0.7rem; }
+    /* Right Interval Grid */
+    .interval-columns { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 12px; }
+    .interval-card { background: #090b16; border: 1px solid var(--card-border); border-radius: 8px; padding: 12px; }
+    .interval-card-header { display: flex; justify-content: space-between; font-size: 0.75rem; font-weight: 800; color: #40c4ff; margin-bottom: 10px; border-bottom: 1px solid #14192d; padding-bottom: 6px; }
+    .interval-boss-item { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; font-size: 0.8rem; }
+    .interval-boss-name { font-weight: 600; color: #ffffff; }
+    .interval-boss-time { font-size: 0.75rem; color: var(--text-muted); }
+    .btn-kill-sm { background: #d32f2f; color: white; border: none; padding: 2px 8px; border-radius: 4px; font-size: 0.65rem; cursor: pointer; font-weight: 700; margin-left: 6px; }
   </style>
 </head>
 <body>
 
-  <!-- Navigation Bar -->
-  <div class="navbar">
-    <div class="logo">⚡ ASTRA</div>
-    <div class="nav-tabs">
-      <div class="tab active">Tracker</div>
-      <div class="tab">Hidden Class</div>
-      <div class="tab">Relic</div>
-    </div>
-    <div class="status-badge">
-      <div class="status-dot"></div> LIVE
-    </div>
+  <div class="top-bar">
+    <div class="brand">⚡ ASTRA</div>
+    <div class="nav-btn">TRACKER</div>
+    <div class="live-badge">● LIVE</div>
   </div>
 
-  <!-- Featured Spawning Boss Banner -->
-  <div class="featured-card" id="featured-card">
-    <!-- Populated dynamically via JS -->
+  <!-- Next Spawning Boss Banner -->
+  <div class="featured-box" id="featured-card">
+    <!-- Rendered dynamically -->
   </div>
 
-  <!-- Bottom Grid Panels -->
-  <div class="dashboard-grid">
-    <!-- Today's Upcoming Spawns -->
+  <div class="grid-container">
+    <!-- Left Column: Today's Timeline -->
     <div class="panel">
-      <div class="panel-header">
-        <span>🕒 Today</span>
+      <div class="panel-title">
+        <span>🕒 TODAY</span>
       </div>
-      <div id="spawn-list"></div>
+      <div id="spawn-timeline"></div>
     </div>
 
-    <!-- Interval Filter Grid -->
+    <!-- Right Column: Interval Cooldown Groups -->
     <div class="panel">
-      <div class="panel-header">
-        <span>🔄 Interval Filter</span>
+      <div class="panel-title">
+        <span>🔄 INTERVAL COOLDOWNS</span>
       </div>
-      <div class="interval-grid">
-        <div class="interval-btn selected"><span>⏱ EVERY 10H</span> <span class="badge">2</span></div>
-        <div class="interval-btn"><span>⏱ EVERY 18H</span> <span class="badge">1</span></div>
-        <div class="interval-btn"><span>⏱ EVERY 21H</span> <span class="badge">1</span></div>
-        <div class="interval-btn"><span>⏱ EVERY 24H</span> <span class="badge">3</span></div>
-        <div class="interval-btn"><span>⏱ EVERY 29H</span> <span class="badge">2</span></div>
-        <div class="interval-btn"><span>⏱ EVERY 32H</span> <span class="badge">2</span></div>
-        <div class="interval-btn"><span>⏱ EVERY 35H</span> <span class="badge">3</span></div>
-        <div class="interval-btn"><span>⏱ EVERY 37H</span> <span class="badge">1</span></div>
-        <div class="interval-btn"><span>⏱ EVERY 48H</span> <span class="badge">3</span></div>
-      </div>
+      <div class="interval-columns" id="interval-grid"></div>
     </div>
   </div>
 
   <script>
-    async function loadBossTracker() {
+    let localBosses = [];
+
+    async function fetchBossData() {
       try {
         const res = await fetch('/api/bosses');
-        const bosses = await res.json();
-        if (!bosses || bosses.length === 0) return;
-
-        // Sort bosses by soonest spawn time
-        bosses.sort((a, b) => new Date(a.nextSpawn) - new Date(b.nextSpawn));
-
-        // Featured Next Boss (First item in sorted array)
-        const nextBoss = bosses[0];
-        const now = new Date();
-        const spawnTime = new Date(nextBoss.nextSpawn);
-        const diffMs = spawnTime - now;
-
-        let timeFormatted = "SPAWNED";
-        if (diffMs > 0) {
-          const h = Math.floor(diffMs / (1000 * 60 * 60));
-          const m = Math.floor((diffMs % (1000 * 60 * 60)) / (1000 * 60));
-          timeFormatted = `${h}h ${m}m`;
-        }
-
-        const dateOptions = { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' };
-        
-        document.getElementById('featured-card').innerHTML = `
-          <div class="boss-details">
-            <div class="boss-avatar-ring">👹</div>
-            <div>
-              <div class="boss-meta-label">● NEXT SPAWN</div>
-              <div class="boss-title">${nextBoss.name}</div>
-              <div class="tags">
-                <span class="tag">Lv.${nextBoss.level}</span>
-                <span class="tag">${nextBoss.location}</span>
-                <span class="tag highlight">INTERVAL</span>
-              </div>
-              <div class="spawn-timestamp">${spawnTime.toLocaleDateString('en-US', dateOptions)}</div>
-            </div>
-          </div>
-          <div class="timer-display">
-            <div class="huge-timer">${timeFormatted}</div>
-            <div class="timer-subtext">TIME REMAINING</div>
-            <button class="btn-kill-featured" onclick="markKilled(${nextBoss.id})">Mark Dead</button>
-          </div>
-        `;
-
-        // Render Today's Spawn List
-        const spawnListContainer = document.getElementById('spawn-list');
-        spawnListContainer.innerHTML = '';
-        
-        bosses.forEach(boss => {
-          const bTime = new Date(boss.nextSpawn);
-          const timeStr = bTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-          
-          const row = document.createElement('div');
-          row.className = 'spawn-row';
-          row.innerHTML = `
-            <span class="spawn-row-name">${boss.name}</span>
-            <span class="spawn-row-time">${timeStr}</span>
-          `;
-          spawnListContainer.appendChild(row);
-        });
-
-      } catch (err) {
-        console.error("Failed to load boss data:", err);
+        localBosses = await res.json();
+        renderDashboard();
+      } catch (e) {
+        console.error("Error fetching bosses:", e);
       }
     }
 
-    async function markKilled(id) {
-      await fetch(`/api/bosses/${id}/kill`, { method: 'POST' });
-      loadBossTracker();
+    function renderDashboard() {
+      if (!localBosses || localBosses.length === 0) return;
+
+      const now = new Date();
+
+      // Calculate next spawn timestamp for each boss
+      localBosses.forEach(boss => {
+        const lastKilledDate = new Date(boss.lastKilled);
+        boss.nextSpawnDate = new Date(lastKilledDate.getTime() + boss.intervalHours * 3600 * 1000);
+      });
+
+      // Sort by soonest upcoming spawn
+      localBosses.sort((a, b) => a.nextSpawnDate - b.nextSpawnDate);
+
+      // 1. Featured Next Boss
+      const nextBoss = localBosses[0];
+      const diffMs = nextBoss.nextSpawnDate - now;
+
+      let timerText = "00m 00s";
+      if (diffMs > 0) {
+        const h = Math.floor(diffMs / (1000 * 60 * 60));
+        const m = Math.floor((diffMs % (1000 * 60 * 60)) / (1000 * 60));
+        const s = Math.floor((diffMs % (1000 * 60)) / 1000);
+        timerText = h > 0 ? `${h}h ${m}m ${s}s` : `${m}m ${s}s`;
+      } else {
+        timerText = "SPAWNED";
+      }
+
+      const dateStr = nextBoss.nextSpawnDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric' }) + " " +
+                      nextBoss.nextSpawnDate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+
+      document.getElementById('featured-card').innerHTML = `
+        <div class="boss-details">
+          <div class="boss-icon">👹</div>
+          <div>
+            <div class="meta-tag">● NEXT SPAWN</div>
+            <div class="boss-name-title">${nextBoss.name}</div>
+            <div class="badge-row">
+              <span class="pill">Lv.${nextBoss.level}</span>
+              <span class="pill">${nextBoss.location}</span>
+              <span class="pill active">EVERY ${nextBoss.intervalHours}H</span>
+            </div>
+            <div class="date-str">${dateStr}</div>
+          </div>
+        </div>
+        <div class="timer-side">
+          <div class="countdown-text">${timerText}</div>
+          <div class="timer-label">TIME REMAINING</div>
+          <button class="btn-kill-sm" style="padding:6px 12px; margin-top:8px;" onclick="killBoss(${nextBoss.id})">Mark Dead</button>
+        </div>
+      `;
+
+      // 2. Left Column: Spawn Timeline
+      const timelineContainer = document.getElementById('spawn-timeline');
+      timelineContainer.innerHTML = '';
+      localBosses.slice(0, 8).forEach(boss => {
+        const timeFormatted = boss.nextSpawnDate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+        const row = document.createElement('div');
+        row.className = 'spawn-row';
+        row.innerHTML = `
+          <span class="spawn-name">${boss.name}</span>
+          <span class="spawn-time">${timeFormatted}</span>
+        `;
+        timelineContainer.appendChild(row);
+      });
+
+      // 3. Right Column: Group by Intervals
+      const intervalGrid = document.getElementById('interval-grid');
+      intervalGrid.innerHTML = '';
+
+      // Grouping logic
+      const grouped = {};
+      localBosses.forEach(boss => {
+        const key = `EVERY ${boss.intervalHours}H`;
+        if (!grouped[key]) grouped[key] = [];
+        grouped[key].push(boss);
+      });
+
+      Object.keys(grouped).forEach(key => {
+        const card = document.createElement('div');
+        card.className = 'interval-card';
+
+        let bossRowsHtml = '';
+        grouped[key].forEach(boss => {
+          const bossDiff = boss.nextSpawnDate - now;
+          let remainingStr = "Ready";
+          if (bossDiff > 0) {
+            const bh = Math.floor(bossDiff / (1000 * 60 * 60));
+            const bm = Math.floor((bossDiff % (1000 * 60 * 60)) / (1000 * 60));
+            remainingStr = bh > 0 ? `${bh}h ${bm}m` : `${bm}m`;
+          }
+
+          bossRowsHtml += `
+            <div class="interval-boss-item">
+              <div>
+                <span class="interval-boss-name">${boss.name}</span>
+              </div>
+              <div>
+                <span class="interval-boss-time">${remainingStr}</span>
+                <button class="btn-kill-sm" onclick="killBoss(${boss.id})">Kill</button>
+              </div>
+            </div>
+          `;
+        });
+
+        card.innerHTML = `
+          <div class="interval-card-header">
+            <span>⏱ ${key}</span>
+            <span>${grouped[key].length}</span>
+          </div>
+          ${bossRowsHtml}
+        `;
+        intervalGrid.appendChild(card);
+      });
     }
 
-    setInterval(loadBossTracker, 5000);
-    loadBossTracker();
+    async function killBoss(id) {
+      await fetch(`/api/bosses/${id}/kill`, { method: 'POST' });
+      fetchBossData();
+    }
+
+    // Refresh second-by-second for live timer update
+    setInterval(renderDashboard, 1000);
+    // Fetch fresh backend data every 10 seconds
+    setInterval(fetchBossData, 10000);
+
+    fetchBossData();
   </script>
 </body>
 </html>
