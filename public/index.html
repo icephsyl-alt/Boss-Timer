@@ -1,0 +1,82 @@
+HTML
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ASTRA Boss Tracker</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { background-color: #0b0d19; color: #e1e6f0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; padding: 24px; }
+    .header { margin-bottom: 24px; display: flex; align-items: center; justify-content: space-between; }
+    .header h1 { font-size: 1.8rem; color: #7c4dff; letter-spacing: 1px; }
+    .container { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 16px; }
+    .card { background: #151828; border: 1px solid #23283d; border-radius: 12px; padding: 20px; position: relative; }
+    .boss-name { font-size: 1.4rem; font-weight: bold; color: #ffffff; }
+    .boss-info { font-size: 0.9rem; color: #8d96b0; margin-top: 4px; }
+    .timer-box { margin-top: 16px; display: flex; justify-content: space-between; align-items: center; }
+    .time-remaining { font-size: 2rem; font-weight: bold; color: #ffb74d; }
+    .btn-kill { background: #e53935; color: white; border: none; padding: 10px 16px; border-radius: 6px; font-weight: bold; cursor: pointer; transition: background 0.2s; }
+    .btn-kill:hover { background: #c62828; }
+  </style>
+</head>
+<body>
+
+  <div class="header">
+    <h1>✨ ASTRA BOSS TRACKER</h1>
+  </div>
+
+  <div class="container" id="boss-container">
+    <!-- Boss cards dynamically render here -->
+  </div>
+
+  <script>
+    async function updateDashboard() {
+      try {
+        const response = await fetch('/api/bosses');
+        const bosses = await response.json();
+        const container = document.getElementById('boss-container');
+        container.innerHTML = '';
+
+        bosses.forEach(boss => {
+          const now = new Date();
+          const spawnTime = new Date(boss.nextSpawn);
+          const diffMs = spawnTime - now;
+          
+          let displayTime = "SPAWNED";
+          if (diffMs > 0) {
+            const hours = Math.floor(diffMs / (1000 * 60 * 60));
+            const minutes = Math.floor((diffMs % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((diffMs % (1000 * 60)) / 1000);
+            displayTime = `${hours}h ${minutes}m ${seconds}s`;
+          }
+
+          const card = document.createElement('div');
+          card.className = 'card';
+          card.innerHTML = `
+            <div class="boss-name">${boss.name} <span style="font-size:0.9rem; color:#7c4dff;">Lv.${boss.level}</span></div>
+            <div class="boss-info">Location: ${boss.location}</div>
+            <div class="boss-info">Interval: Every ${boss.intervalHours} Hours</div>
+            <div class="boss-info">Next Spawn: ${spawnTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</div>
+            <div class="timer-box">
+              <div class="time-remaining">${displayTime}</div>
+              <button class="btn-kill" onclick="markKilled(${boss.id})">Mark Killed</button>
+            </div>
+          `;
+          container.appendChild(card);
+        });
+      } catch (err) {
+        console.error("Error fetching bosses:", err);
+      }
+    }
+
+    async function markKilled(id) {
+      await fetch(`/api/bosses/${id}/kill`, { method: 'POST' });
+      updateDashboard();
+    }
+
+    setInterval(updateDashboard, 1000);
+    updateDashboard();
+  </script>
+</body>
+</html>
